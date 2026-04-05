@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Free Map (No API)</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      text-align: center;
+    }
+    #map {
+      height: 90vh;
+      width: 100%;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>📍 My Location (FREE Map)</h2>
+<button onclick="getLocation()">Get My Location</button>
+
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+let map = L.map('map').setView([20.5937, 78.9629], 5); // Default India
+
+// Load map tiles (OpenStreetMap)
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+}).addTo(map);
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    alert("Geolocation not supported");
+  }
+}
+
+function showPosition(position) {
+  let lat = position.coords.latitude;
+  let lon = position.coords.longitude;
+
+  map.setView([lat, lon], 15);
+
+  L.marker([lat, lon])
+    .addTo(map)
+    .bindPopup("You are here!")
+    .openPopup();
+}
+</script>
+
+</body>
+</html>
